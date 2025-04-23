@@ -2,10 +2,10 @@
 // @name            Wiki language switcher
 // @description     Easily switch Wikipedia language version with a heading link (see the screenshot). Retrieves links to other Wikipedia language versions (user-specified) for given article (if present), and places them beside main article heading on the top of the page. Can be both used as translator and quick link feature.
 // @icon            http://en.wikipedia.org/favicon.ico
-// @version         2023.02.01 (0.3.7)
+// @version         2025.04.23 (0.3.8)
 // @namespace       qbk
 // @author          http://jakub-g.github.com/
-// @downloadURL     https://raw.githubusercontent.com/jakub-g/greasemonkey-userscripts/master/wiki/langSwitcher.user.js
+// @downloadURL     https://raw.githubusercontent.com/Pudel-des-Todes/greasemonkey-userscripts/refs/heads/master/wiki/langSwitcher.js
 // @grant           none
 // @include         http*://*.wikipedia.org/wiki/*
 // @include         http*://*.wiktionary.org/wiki/*
@@ -17,15 +17,26 @@
 // ==/UserScript==
 
 (function(){
-
+  
    /////////////// CONFIG
    var asMyLangs = ['en','de'];
-   var sMyColor = '#666';
+   var sMyColor = '#e00';
    var asValidDomains = [
       "wikimedia.org", "wikipedia.org", "wiktionary.org", "wikiversity.org",
       "wikisource.org", "wikibooks.org", "wikiquote.org", "wikinews.org"];
 
    /////////////// DO NOT CHANGE BELOW THIS LINE
+  
+   // do not apply the script wehn reloading the page or going back and forward
+   const markerText = 'wiki-lang-switcher-applied';
+   if (document.getElementById(markerText)) {
+   		return;
+	 } else {
+      var marker = document.createElement('meta');
+      marker.id = markerText;
+      document.head.appendChild(marker);
+   }
+  
    function endsWith(str, suffix) {
        return str.indexOf(suffix, str.length - suffix.length) !== -1;
    }
